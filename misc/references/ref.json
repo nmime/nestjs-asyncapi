@@ -1,1 +1,279 @@
-{"asyncapi":"2.5.0","info":{"title":"Feline","description":"Feline server description here","version":"1.0","contact":{}},"tags":[],"servers":{"europe":{"url":"ws://0.0.0.0:4001","protocol":"socket.io","protocolVersion":"4","description":"Allows you to connect using the websocket protocol to our Socket.io server.","security":[{"user-password":[]}],"variables":{"port":{"description":"Secure connection (TLS) is available through port 443.","default":"443"}},"bindings":{}},"asia":{"url":"ws://0.0.0.0:4001","protocol":"socket.io","protocolVersion":"4","description":"Allows you to connect using the websocket protocol to our Socket.io server.","security":[{"user-password":[]}],"variables":{"port":{"description":"Secure connection (TLS) is available through port 443.","default":"443"}},"bindings":{}},"north-america":{"url":"ws://0.0.0.0:4001","protocol":"socket.io","protocolVersion":"4","description":"Allows you to connect using the websocket protocol to our Socket.io server.","security":[{"user-password":[]}],"variables":{"port":{"description":"Secure connection (TLS) is available through port 443.","default":"443"}},"bindings":{}},"south-america":{"url":"ws://0.0.0.0:4001","protocol":"socket.io","protocolVersion":"4","description":"Allows you to connect using the websocket protocol to our Socket.io server.","security":[{"user-password":[]}],"variables":{"port":{"description":"Secure connection (TLS) is available through port 443.","default":"443"}},"bindings":{}},"africa":{"url":"ws://0.0.0.0:4001","protocol":"socket.io","protocolVersion":"4","description":"Allows you to connect using the websocket protocol to our Socket.io server.","security":[{"user-password":[]}],"variables":{"port":{"description":"Secure connection (TLS) is available through port 443.","default":"443"}},"bindings":{}},"australia":{"url":"ws://0.0.0.0:4001","protocol":"socket.io","protocolVersion":"4","description":"Allows you to connect using the websocket protocol to our Socket.io server.","security":[{"user-password":[]}],"variables":{"port":{"description":"Secure connection (TLS) is available through port 443.","default":"443"}},"bindings":{}}},"components":{"securitySchemes":{"user-password":{"type":"userPassword"}},"schemas":{"Feline":{"type":"object","properties":{"id":{"type":"number"},"name":{"type":"string"},"age":{"type":"number"},"gender":{"enum":["male","female"],"type":"string"},"dominantPaw":{"enum":["left","right"],"type":"string"},"tags":{"type":"array","items":{"type":"string"}},"birthDatetime":{"format":"date-time","type":"string"}},"required":["id","name","age","gender","dominantPaw","tags","birthDatetime"]},"CreateFelineDto":{"type":"object","properties":{"correlationId":{"type":"string","format":"uuid"},"version":{"type":"string","format":"x.y.z","example":"1.0.1"},"payload":{"oneOf":[{"$ref":"#/components/schemas/Cat"},{"$ref":"#/components/schemas/Lion"},{"$ref":"#/components/schemas/Tiger"}],"allOf":[{"$ref":"#/components/schemas/Feline"}]},"timestamp":{"format":"date-time","type":"string"}},"required":["correlationId","version","payload","timestamp"]},"FelineRto":{"type":"object","properties":{"correlationId":{"type":"string","format":"uuid"},"version":{"type":"string","format":"x.y.z","example":"1.0.1"},"payload":{"oneOf":[{"$ref":"#/components/schemas/Cat"},{"$ref":"#/components/schemas/Lion"},{"$ref":"#/components/schemas/Tiger"}],"allOf":[{"$ref":"#/components/schemas/Feline"}]},"timestamp":{"format":"date-time","type":"string"}},"required":["correlationId","version","payload","timestamp"]},"FelineExtendedRto":{"type":"object","properties":{"correlationId":{"type":"string","format":"uuid"},"version":{"type":"string","format":"x.y.z","example":"1.0.1"},"payload":{"oneOf":[{"$ref":"#/components/schemas/Cat"},{"$ref":"#/components/schemas/Lion"},{"$ref":"#/components/schemas/Tiger"}],"allOf":[{"$ref":"#/components/schemas/Feline"}]},"timestamp":{"format":"date-time","type":"string"}},"required":["correlationId","version","payload","timestamp"]},"JournalingDataDto":{"type":"object","properties":{"correlationId":{"type":"string","format":"uuid"},"version":{"type":"string","format":"x.y.z","example":"1.0.1"},"payload":{"type":"object"},"timestamp":{"format":"date-time","type":"string"}},"required":["correlationId","version","payload","timestamp"]},"Cat":{"type":"object","properties":{"breed":{"type":"string","example":"Maine Coon"},"id":{"type":"number"},"name":{"type":"string"},"age":{"type":"number"},"gender":{"enum":["male","female"],"type":"string"},"dominantPaw":{"enum":["left","right"],"type":"string"},"tags":{"type":"array","items":{"type":"string"}},"birthDatetime":{"format":"date-time","type":"string"}},"required":["breed","id","name","age","gender","dominantPaw","tags","birthDatetime"]},"Lion":{"type":"object","properties":{"id":{"type":"number"},"name":{"type":"string"},"age":{"type":"number"},"gender":{"enum":["male","female"],"type":"string"},"dominantPaw":{"enum":["left","right"],"type":"string"},"tags":{"type":"array","items":{"type":"string"}},"birthDatetime":{"format":"date-time","type":"string"},"roarVolume":{"type":"number"}},"required":["id","name","age","gender","dominantPaw","tags","birthDatetime","roarVolume"]},"Tiger":{"type":"object","properties":{"id":{"type":"number"},"name":{"type":"string"},"age":{"type":"number"},"gender":{"enum":["male","female"],"type":"string"},"dominantPaw":{"enum":["left","right"],"type":"string"},"tags":{"type":"array","items":{"type":"string"}},"birthDatetime":{"format":"date-time","type":"string"},"numberOfStripes":{"type":"number"}},"required":["id","name","age","gender","dominantPaw","tags","birthDatetime","numberOfStripes"]}}},"defaultContentType":"application/json","channels":{"ws/create/feline":{"subscribe":{"message":{"oneOf":[{"name":"oneOf demo #1","payload":{"$ref":"#/components/schemas/FelineRto"}},{"name":"oneOf demo #2","payload":{"$ref":"#/components/schemas/FelineExtendedRto"}}]}},"publish":{"message":{"payload":{"$ref":"#/components/schemas/CreateFelineDto"},"name":"FelinesGateway#createFeline"}}},"ms/journal":{"subscribe":{"message":{"payload":{"$ref":"#/components/schemas/JournalingDataDto"},"name":"FelinesController#journal"}}},"ms/create/feline":{"subscribe":{"message":{"payload":{"$ref":"#/components/schemas/FelineRto"},"name":"FelinesController#createFeline"}},"publish":{"message":{"payload":{"$ref":"#/components/schemas/CreateFelineDto"},"name":"FelinesController#createFeline"}}}}}
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Feline",
+    "description": "Feline server description here",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": {
+    "europe": {
+      "host": "0.0.0.0:4001",
+      "protocol": "socket.io",
+      "protocolVersion": "4",
+      "description": "Allows you to connect using the websocket protocol to our Socket.io server.",
+      "security": [
+        {
+          "$ref": "#/components/securitySchemes/user-password"
+        }
+      ],
+      "variables": {
+        "port": {
+          "description": "Secure connection (TLS) is available through port 443.",
+          "default": "443"
+        }
+      }
+    }
+  },
+  "channels": {
+    "ws_create_feline": {
+      "address": "ws/create/feline",
+      "messages": {
+        "FelinesGateway#createFeline": {
+          "$ref": "#/components/messages/FelinesGateway#createFeline"
+        },
+        "oneOf demo #1": {
+          "$ref": "#/components/messages/oneOf demo #1"
+        },
+        "oneOf demo #2": {
+          "$ref": "#/components/messages/oneOf demo #2"
+        }
+      }
+    },
+    "ms_journal": {
+      "address": "ms/journal",
+      "messages": {
+        "FelinesController#journal": {
+          "$ref": "#/components/messages/FelinesController#journal"
+        }
+      }
+    },
+    "ms_create_feline": {
+      "address": "ms/create/feline",
+      "messages": {
+        "FelinesController#createFeline": {
+          "$ref": "#/components/messages/FelinesController#createFeline"
+        }
+      }
+    }
+  },
+  "operations": {
+    "ws_create_feline_send": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/ws_create_feline"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/ws_create_feline/messages/FelinesGateway#createFeline"
+        }
+      ]
+    },
+    "ws_create_feline_receive": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/ws_create_feline"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/ws_create_feline/messages/oneOf demo #1"
+        },
+        {
+          "$ref": "#/channels/ws_create_feline/messages/oneOf demo #2"
+        }
+      ]
+    },
+    "ms_journal_receive": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/ms_journal"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/ms_journal/messages/FelinesController#journal"
+        }
+      ]
+    },
+    "ms_create_feline_send": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/ms_create_feline"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/ms_create_feline/messages/FelinesController#createFeline"
+        }
+      ]
+    },
+    "ms_create_feline_receive": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/ms_create_feline"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/ms_create_feline/messages/FelinesController#createFeline"
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "user-password": {
+        "type": "userPassword"
+      }
+    },
+    "messages": {
+      "FelinesGateway#createFeline": {
+        "name": "FelinesGateway#createFeline",
+        "payload": {
+          "$ref": "#/components/schemas/CreateFelineDto"
+        }
+      },
+      "oneOf demo #1": {
+        "name": "oneOf demo #1",
+        "payload": {
+          "$ref": "#/components/schemas/FelineRto"
+        }
+      },
+      "oneOf demo #2": {
+        "name": "oneOf demo #2",
+        "payload": {
+          "$ref": "#/components/schemas/FelineExtendedRto"
+        }
+      },
+      "FelinesController#journal": {
+        "name": "FelinesController#journal",
+        "payload": {
+          "$ref": "#/components/schemas/JournalingDataDto"
+        }
+      },
+      "FelinesController#createFeline": {
+        "name": "FelinesController#createFeline",
+        "payload": {
+          "$ref": "#/components/schemas/CreateFelineDto"
+        }
+      }
+    },
+    "schemas": {
+      "Feline": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "name": { "type": "string" },
+          "age": { "type": "number" },
+          "gender": { "enum": ["male", "female"], "type": "string" },
+          "dominantPaw": { "enum": ["left", "right"], "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "birthDatetime": { "format": "date-time", "type": "string" }
+        },
+        "required": ["id", "name", "age", "gender", "dominantPaw", "tags", "birthDatetime"]
+      },
+      "CreateFelineDto": {
+        "type": "object",
+        "properties": {
+          "correlationId": { "type": "string", "format": "uuid" },
+          "version": { "type": "string", "format": "x.y.z", "example": "1.0.1" },
+          "payload": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/Cat" },
+              { "$ref": "#/components/schemas/Lion" },
+              { "$ref": "#/components/schemas/Tiger" }
+            ],
+            "allOf": [{ "$ref": "#/components/schemas/Feline" }]
+          },
+          "timestamp": { "format": "date-time", "type": "string" }
+        },
+        "required": ["correlationId", "version", "payload", "timestamp"]
+      },
+      "FelineRto": {
+        "type": "object",
+        "properties": {
+          "correlationId": { "type": "string", "format": "uuid" },
+          "version": { "type": "string", "format": "x.y.z", "example": "1.0.1" },
+          "payload": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/Cat" },
+              { "$ref": "#/components/schemas/Lion" },
+              { "$ref": "#/components/schemas/Tiger" }
+            ],
+            "allOf": [{ "$ref": "#/components/schemas/Feline" }]
+          },
+          "timestamp": { "format": "date-time", "type": "string" }
+        },
+        "required": ["correlationId", "version", "payload", "timestamp"]
+      },
+      "FelineExtendedRto": {
+        "type": "object",
+        "properties": {
+          "correlationId": { "type": "string", "format": "uuid" },
+          "version": { "type": "string", "format": "x.y.z", "example": "1.0.1" },
+          "payload": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/Cat" },
+              { "$ref": "#/components/schemas/Lion" },
+              { "$ref": "#/components/schemas/Tiger" }
+            ],
+            "allOf": [{ "$ref": "#/components/schemas/Feline" }]
+          },
+          "timestamp": { "format": "date-time", "type": "string" }
+        },
+        "required": ["correlationId", "version", "payload", "timestamp"]
+      },
+      "JournalingDataDto": {
+        "type": "object",
+        "properties": {
+          "correlationId": { "type": "string", "format": "uuid" },
+          "version": { "type": "string", "format": "x.y.z", "example": "1.0.1" },
+          "payload": { "type": "object" },
+          "timestamp": { "format": "date-time", "type": "string" }
+        },
+        "required": ["correlationId", "version", "payload", "timestamp"]
+      },
+      "Cat": {
+        "type": "object",
+        "properties": {
+          "breed": { "type": "string", "example": "Maine Coon" },
+          "id": { "type": "number" },
+          "name": { "type": "string" },
+          "age": { "type": "number" },
+          "gender": { "enum": ["male", "female"], "type": "string" },
+          "dominantPaw": { "enum": ["left", "right"], "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "birthDatetime": { "format": "date-time", "type": "string" }
+        },
+        "required": ["breed", "id", "name", "age", "gender", "dominantPaw", "tags", "birthDatetime"]
+      },
+      "Lion": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "name": { "type": "string" },
+          "age": { "type": "number" },
+          "gender": { "enum": ["male", "female"], "type": "string" },
+          "dominantPaw": { "enum": ["left", "right"], "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "birthDatetime": { "format": "date-time", "type": "string" },
+          "roarVolume": { "type": "number" }
+        },
+        "required": ["id", "name", "age", "gender", "dominantPaw", "tags", "birthDatetime", "roarVolume"]
+      },
+      "Tiger": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "name": { "type": "string" },
+          "age": { "type": "number" },
+          "gender": { "enum": ["male", "female"], "type": "string" },
+          "dominantPaw": { "enum": ["left", "right"], "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "birthDatetime": { "format": "date-time", "type": "string" },
+          "numberOfStripes": { "type": "number" }
+        },
+        "required": ["id", "name", "age", "gender", "dominantPaw", "tags", "birthDatetime", "numberOfStripes"]
+      }
+    }
+  },
+  "defaultContentType": "application/json"
+}

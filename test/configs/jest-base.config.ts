@@ -1,4 +1,4 @@
-import { JestConfigWithTsJest } from 'ts-jest';
+import type { JestConfigWithTsJest } from 'ts-jest';
 
 export const baseConfig: JestConfigWithTsJest = {
   moduleFileExtensions: ['js', 'json', 'ts'],

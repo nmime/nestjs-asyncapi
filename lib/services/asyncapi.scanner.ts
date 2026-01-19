@@ -96,12 +96,18 @@ export class AsyncapiScanner {
 
     const schemas = this.explorer.getSchemas();
     this.addExtraModels(schemas, extraModels);
-    const normalizedChannels = this.transformer.normalizeChannels(
-      flatten(denormalizedChannels),
-    );
+
+    // Transform to AsyncAPI 3.0 format
+    const { channels, operations, componentMessages } =
+      this.transformer.normalizeChannels(flatten(denormalizedChannels));
+
     return {
-      ...normalizedChannels,
-      components: { schemas },
+      channels,
+      operations,
+      components: {
+        schemas,
+        messages: componentMessages,
+      },
     };
   }
 

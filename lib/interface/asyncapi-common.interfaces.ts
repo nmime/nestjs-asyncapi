@@ -1,8 +1,8 @@
 import {
   InfoObject,
-  ReferenceObject,
   SchemaObject,
   ServerVariableObject,
+  ReferenceObject as SwaggerReferenceObject,
 } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import {
   AmqpChannelBinding,
@@ -15,19 +15,34 @@ import {
   KafkaServerBinding,
 } from '../binding';
 import { AsyncOperationPayload } from './asyncapi-operation-payload.interface';
-import { AsyncServerObject } from './asyncapi-server.interface';
+import {
+  AsyncServerObject,
+  AsyncServerObject3,
+} from './asyncapi-server.interface';
+
+// Re-export ReferenceObject for use in other modules
+export type ReferenceObject = SwaggerReferenceObject;
+
+// ============================================================================
+// AsyncAPI 3.0 Document Interface
+// ============================================================================
 
 export interface AsyncApiDocument {
   asyncapi: string;
   id?: string;
   info: InfoObject;
-  servers?: Record<string, AsyncServerObject>;
-  channels: AsyncChannelsObject;
+  servers?: Record<string, AsyncServerObject | AsyncServerObject3>;
+  channels: AsyncChannelsObject | AsyncChannelsObject3;
+  operations?: AsyncOperationsObject3;
   components?: AsyncComponentsObject;
   tags?: AsyncTagObject[];
   externalDocs?: ExternalDocumentationObject;
   defaultContentType?: string;
 }
+
+// ============================================================================
+// AsyncAPI 2.x Channel Interfaces (backward compatibility)
+// ============================================================================
 
 export type AsyncChannelsObject = Record<string, AsyncChannelObject>;
 export interface AsyncChannelObject {
@@ -36,6 +51,55 @@ export interface AsyncChannelObject {
   publish?: AsyncOperationObject;
   parameters?: Record<string, ParameterObject>;
   bindings?: Record<string, KafkaChannelBinding | AmqpChannelBinding>;
+}
+
+// ============================================================================
+// AsyncAPI 3.0 Channel Interfaces
+// ============================================================================
+
+export type AsyncChannelsObject3 = Record<string, AsyncChannelObject3>;
+export interface AsyncChannelObject3 {
+  address: string;
+  title?: string;
+  summary?: string;
+  description?: string;
+  messages?: Record<string, ReferenceObject | AsyncMessageObject>;
+  parameters?: Record<string, ParameterObject | ReferenceObject>;
+  servers?: ReferenceObject[];
+  bindings?: Record<string, KafkaChannelBinding | AmqpChannelBinding>;
+  tags?: AsyncTagObject[];
+  externalDocs?: ExternalDocumentationObject;
+}
+
+// ============================================================================
+// AsyncAPI 3.0 Operation Interfaces
+// ============================================================================
+
+export type AsyncOperationsObject3 = Record<string, AsyncOperationObject3>;
+export interface AsyncOperationObject3 {
+  action: 'send' | 'receive';
+  channel: ReferenceObject;
+  title?: string;
+  summary?: string;
+  description?: string;
+  security?: SecurityObject[];
+  tags?: AsyncTagObject[];
+  externalDocs?: ExternalDocumentationObject;
+  bindings?: Record<string, KafkaOperationBinding | AmqpOperationBinding>;
+  traits?: ReferenceObject[];
+  messages?: ReferenceObject[];
+  reply?: AsyncReplyObject;
+}
+
+export interface AsyncReplyObject {
+  address?: AsyncReplyAddressObject;
+  channel?: ReferenceObject;
+  messages?: ReferenceObject[];
+}
+
+export interface AsyncReplyAddressObject {
+  location: string;
+  description?: string;
 }
 
 export interface AsyncServerVariableObject extends ServerVariableObject {
