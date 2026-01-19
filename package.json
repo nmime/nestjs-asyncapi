@@ -1,14 +1,20 @@
 {
   "name": "nestjs-asyncapi",
-  "version": "1.4.0",
-  "description": "NestJS AsyncAPI module - generate documentation of your event-based services using decorators",
-  "author": "Ilya Moroz",
+  "version": "2.0.0",
+  "description": "NestJS AsyncAPI module - generate documentation of your event-based services using decorators. Supports AsyncAPI 3.0, 2.x, and 1.x specifications.",
+  "author": "nmime",
+  "contributors": [
+    {
+      "name": "Ilya Moroz",
+      "url": "https://github.com/flamewow"
+    }
+  ],
   "license": "MIT",
   "main": "./dist/lib/index.js",
   "types": "./dist/lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/flamewow/nestjs-asyncapi"
+    "url": "https://github.com/nmime/nestjs-asyncapi"
   },
   "validate-branch-name": {
     "pattern": "^(main|dev){1}$|^(feat|fix|release|test|refactor|docs|perf|style|chore)/.+$",
@@ -16,6 +22,8 @@
   },
   "keywords": [
     "asyncapi",
+    "asyncapi-3.0",
+    "asyncapi-2.0",
     "nest",
     "nestjs",
     "swagger",
@@ -24,7 +32,11 @@
     "socket.io",
     "websockets",
     "pubsub",
-    "microservices"
+    "microservices",
+    "event-driven",
+    "kafka",
+    "amqp",
+    "rabbitmq"
   ],
   "peerDependencies": {
     "@nestjs/common": "^11.0.0 || ^10.0.0 || ^9.0.0",

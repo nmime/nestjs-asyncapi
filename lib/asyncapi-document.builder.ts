@@ -10,12 +10,14 @@ import {
   AsyncServerObject,
 } from './interface';
 
+export type AsyncApiVersion = '3.0.0' | '2.6.0' | '2.5.0' | '2.4.0' | '2.3.0' | '2.2.0' | '2.1.0' | '2.0.0' | '1.2.0' | '1.1.0' | '1.0.0';
+
 export class AsyncApiDocumentBuilder {
   private readonly buildDocumentBase = (): Omit<
     AsyncApiDocument,
     'channels'
   > => ({
-    asyncapi: '2.5.0',
+    asyncapi: '3.0.0',
     info: {
       title: '',
       description: '',
@@ -29,6 +31,16 @@ export class AsyncApiDocumentBuilder {
 
   private readonly document: Omit<AsyncApiDocument, 'channels'> =
     this.buildDocumentBase();
+
+  /**
+   * Sets the AsyncAPI specification version.
+   * Supported versions: 3.0.0, 2.6.0, 2.5.0, 2.4.0, 2.3.0, 2.2.0, 2.1.0, 2.0.0, 1.2.0, 1.1.0, 1.0.0
+   * @default '3.0.0'
+   */
+  public setAsyncApiVersion(version: AsyncApiVersion): this {
+    this.document.asyncapi = version;
+    return this;
+  }
 
   public setTitle(title: string): this {
     this.document.info.title = title;
