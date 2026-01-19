@@ -1,8 +1,8 @@
-# NestJS AsyncAPI
+# @nmime/nestjs-asyncapi
 
-[![npm version](https://img.shields.io/npm/v/nestjs-asyncapi.svg)](https://www.npmjs.com/package/nestjs-asyncapi)
-[![npm downloads](https://img.shields.io/npm/dm/nestjs-asyncapi.svg)](https://www.npmjs.com/package/nestjs-asyncapi)
-[![license](https://img.shields.io/npm/l/nestjs-asyncapi.svg)](https://github.com/nmime/nestjs-asyncapi/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@nmime/nestjs-asyncapi.svg)](https://www.npmjs.com/package/@nmime/nestjs-asyncapi)
+[![npm downloads](https://img.shields.io/npm/dm/@nmime/nestjs-asyncapi.svg)](https://www.npmjs.com/package/@nmime/nestjs-asyncapi)
+[![license](https://img.shields.io/npm/l/@nmime/nestjs-asyncapi.svg)](https://github.com/nmime/nestjs-asyncapi/blob/main/LICENSE)
 
 [AsyncAPI](https://www.asyncapi.com/) module for [NestJS](https://github.com/nestjs/nest). Generate AsyncAPI documentation for event-based services (WebSockets, microservices, Kafka, AMQP, etc.) similar to [@nestjs/swagger](https://github.com/nestjs/swagger).
 
@@ -25,13 +25,13 @@
 ## Installation
 
 ```bash
-npm install nestjs-asyncapi
+npm install @nmime/nestjs-asyncapi
 ```
 
 To skip Chromium installation (used by AsyncAPI generator for PDF generation):
 
 ```bash
-PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install nestjs-asyncapi
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install @nmime/nestjs-asyncapi
 ```
 
 ## Quick Start
@@ -41,7 +41,7 @@ PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install nestjs-asyncapi
 ```typescript
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { AsyncApiModule, AsyncApiDocumentBuilder } from 'nestjs-asyncapi';
+import { AsyncApiModule, AsyncApiDocumentBuilder } from '@nmime/nestjs-asyncapi';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -90,7 +90,7 @@ The module automatically explores `Controllers` and `WebSocketGateway` classes. 
 ```typescript
 import { Controller } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { AsyncApiPub, AsyncApiSub } from 'nestjs-asyncapi';
+import { AsyncApiPub, AsyncApiSub } from '@nmime/nestjs-asyncapi';
 
 class CreateFelineDto {
   @ApiProperty()
