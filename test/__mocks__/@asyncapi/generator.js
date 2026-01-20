@@ -11,7 +11,6 @@ class MockGenerator {
   }
 
   async generateFromString(yaml) {
-    // Return a simple HTML page for testing
     return `<!DOCTYPE html>
 <html>
 <head>
