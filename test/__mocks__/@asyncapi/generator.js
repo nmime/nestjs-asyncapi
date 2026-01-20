@@ -1,7 +1,9 @@
 /**
  * Mock for @asyncapi/generator to avoid ESM issues in Jest tests.
- * The actual HTML generation is not tested, but the document structure is.
  */
+
+const fs = require('fs');
+const path = require('path');
 
 class MockGenerator {
   constructor(templateName, targetDir, options = {}) {
@@ -11,7 +13,7 @@ class MockGenerator {
   }
 
   async generateFromString(yaml) {
-    return `<!DOCTYPE html>
+    const html = `<!DOCTYPE html>
 <html>
 <head>
   <title>AsyncAPI Documentation</title>
@@ -22,6 +24,12 @@ class MockGenerator {
   <pre>${yaml.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
 </body>
 </html>`;
+
+    // Create the target directory and write the file
+    fs.mkdirSync(this.targetDir, { recursive: true });
+    fs.writeFileSync(path.join(this.targetDir, 'index.html'), html, 'utf-8');
+
+    return html;
   }
 
   async generate(asyncapi) {
