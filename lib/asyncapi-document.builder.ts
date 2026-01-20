@@ -2,9 +2,7 @@ import {
   ExternalDocumentationObject,
   ReferenceObject,
   SecuritySchemeObject,
-  TagObject,
 } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
-import { isUndefined, negate, pickBy } from 'lodash';
 import {
   AsyncApiDocument,
   AsyncSecuritySchemeObject,
@@ -12,7 +10,18 @@ import {
   AsyncServerObject3,
 } from './interface';
 
-export type AsyncApiVersion = '3.0.0' | '2.6.0' | '2.5.0' | '2.4.0' | '2.3.0' | '2.2.0' | '2.1.0' | '2.0.0' | '1.2.0' | '1.1.0' | '1.0.0';
+export type AsyncApiVersion =
+  | '3.0.0'
+  | '2.6.0'
+  | '2.5.0'
+  | '2.4.0'
+  | '2.3.0'
+  | '2.2.0'
+  | '2.1.0'
+  | '2.0.0'
+  | '1.2.0'
+  | '1.1.0'
+  | '1.0.0';
 
 export class AsyncApiDocumentBuilder {
   private readonly buildDocumentBase = (): Omit<
@@ -26,7 +35,6 @@ export class AsyncApiDocumentBuilder {
       version: '1.0.0',
       contact: {},
     },
-    tags: [],
     servers: {},
     components: {},
   });
@@ -181,20 +189,24 @@ export class AsyncApiDocumentBuilder {
     return this;
   }
 
+  /**
+   * Adds a tag to the document.
+   * Note: In AsyncAPI 3.0, root-level tags are not valid. Tags added here
+   * are stored but not included in the final document. Use tags on individual
+   * operations, channels, or messages instead via decorators.
+   * @deprecated For AsyncAPI 3.0, use tags on operations/channels/messages instead.
+   */
   public addTag(
     name: string,
     description = '',
     externalDocs?: ExternalDocumentationObject,
   ): this {
-    this.document.tags = this.document.tags.concat(
-      pickBy(
-        {
-          name,
-          description,
-          externalDocs,
-        },
-        negate(isUndefined),
-      ) as TagObject,
+    // In 3.0, tags are not valid at root level.
+    // We keep this for backward compatibility but don't add to document.
+    // Tags should be added via decorators on operations/channels/messages.
+    console.warn(
+      `AsyncAPI 3.0: Root-level tags are not valid. Tag "${name}" will be ignored. ` +
+        'Use @AsyncApiSub/@AsyncApiPub decorators with tags option instead.',
     );
     return this;
   }

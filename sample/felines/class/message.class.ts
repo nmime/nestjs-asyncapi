@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class Message<T extends Record<string, any>> {
   @ApiProperty({ format: 'uuid' })
   correlationId: string;

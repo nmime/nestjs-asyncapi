@@ -13,10 +13,10 @@ export class AsyncapiGenerator {
   constructor(readonly templateOptions?: AsyncApiTemplateOptions) {
     this.generator = new Generator('@asyncapi/html-template', os.tmpdir(), {
       forceWrite: true,
-      entrypoint: 'index.html',
+      entrypoint: 'index.html.js',
       output: 'string',
       templateParams: {
-        singleFile: true,
+        singleFile: 'true',
         ...templateOptions,
       },
     });

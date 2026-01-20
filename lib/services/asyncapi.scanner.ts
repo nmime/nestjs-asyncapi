@@ -18,6 +18,13 @@ import {
 import { AsyncApiExplorer } from './asyncapi.explorer';
 import { AsyncapiTransformer } from './asyncapi.transformer';
 
+interface NestApplicationWithContainer extends INestApplicationContext {
+  container: NestContainer;
+  config?: {
+    getGlobalPrefix(): string;
+  };
+}
+
 export class AsyncapiScanner {
   private readonly transformer = new AsyncapiTransformer();
   private readonly explorer = new AsyncApiExplorer();
@@ -40,7 +47,8 @@ export class AsyncapiScanner {
       operationIdFactory,
     } = options;
 
-    const container: NestContainer = (app as any).container;
+    const container: NestContainer = (app as NestApplicationWithContainer)
+      .container;
     const modules: Module[] = this.getModules(
       container.getModules(),
       includedModules,
@@ -55,10 +63,12 @@ export class AsyncapiScanner {
 
         if (deepScanRoutes) {
           // only load submodules routes if asked
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const isGlobal = (module: Type<any>) =>
             !container.isGlobalModule(module);
 
           Array.from(imports.values())
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .filter(isGlobal as any)
             .map(
               ({
@@ -98,15 +108,15 @@ export class AsyncapiScanner {
     this.addExtraModels(schemas, extraModels);
 
     // Transform to AsyncAPI 3.0 format
-    const { channels, operations, componentMessages } =
-      this.transformer.normalizeChannels(flatten(denormalizedChannels));
+    const { channels, operations } = this.transformer.normalizeChannels(
+      flatten(denormalizedChannels),
+    );
 
     return {
       channels,
       operations,
       components: {
         schemas,
-        messages: componentMessages,
       },
     };
   }
@@ -130,7 +140,7 @@ export class AsyncapiScanner {
       [],
     );
 
-    return flatten(denormalizedArray) as any;
+    return flatten(denormalizedArray) as DenormalizedDoc[];
   }
 
   private getModules(
@@ -146,7 +156,7 @@ export class AsyncapiScanner {
   }
 
   private getGlobalPrefix(app: INestApplicationContext): string {
-    const internalConfigRef = (app as any).config;
+    const internalConfigRef = (app as NestApplicationWithContainer).config;
     return internalConfigRef?.getGlobalPrefix() || '';
   }
 

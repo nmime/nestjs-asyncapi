@@ -13,6 +13,7 @@ export const baseConfig: JestConfigWithTsJest = {
     '#lib(|/.*)$': '<rootDir>/lib/$1',
     '#sample(|/.*)$': '<rootDir>/sample/$1',
     '#test(|/.*)$': '<rootDir>/test/$1',
+    '^@asyncapi/generator$': '<rootDir>/test/__mocks__/@asyncapi/generator.js',
   },
 };
 

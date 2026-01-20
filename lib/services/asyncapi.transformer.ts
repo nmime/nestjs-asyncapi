@@ -70,25 +70,23 @@ export class AsyncapiTransformer {
     // Build the AsyncAPI 3.0 channels and operations
     const channels: AsyncChannelsObject3 = {};
     const operations: AsyncOperationsObject3 = {};
-    const componentMessages: Record<string, AsyncMessageObject> = {};
 
     for (const [address, data] of channelDataMap) {
       const channelId = this.addressToChannelId(address);
 
-      // Build the channel object
+      // Build the channel object (messages are embedded directly)
       channels[channelId] = this.buildChannel(address, data);
-
-      // Collect messages for components
-      for (const [msgName, msg] of Object.entries(data.messages)) {
-        if (!componentMessages[msgName]) {
-          componentMessages[msgName] = msg as AsyncMessageObject;
-        }
-      }
 
       // Build send operations (from pub - app publishes/sends)
       for (let i = 0; i < data.pubOperations.length; i++) {
         const op = data.pubOperations[i];
-        const opId = this.buildOperationId(op, channelId, 'send', i, data.pubOperations.length);
+        const opId = this.buildOperationId(
+          op,
+          channelId,
+          'send',
+          i,
+          data.pubOperations.length,
+        );
         operations[opId] = this.buildOperation(
           'send',
           channelId,
@@ -100,7 +98,13 @@ export class AsyncapiTransformer {
       // Build receive operations (from sub - app subscribes/receives)
       for (let i = 0; i < data.subOperations.length; i++) {
         const op = data.subOperations[i];
-        const opId = this.buildOperationId(op, channelId, 'receive', i, data.subOperations.length);
+        const opId = this.buildOperationId(
+          op,
+          channelId,
+          'receive',
+          i,
+          data.subOperations.length,
+        );
         operations[opId] = this.buildOperation(
           'receive',
           channelId,
@@ -110,7 +114,8 @@ export class AsyncapiTransformer {
       }
     }
 
-    return { channels, operations, componentMessages };
+    // componentMessages is empty since messages are now embedded in channels
+    return { channels, operations, componentMessages: {} };
   }
 
   /**
@@ -119,6 +124,14 @@ export class AsyncapiTransformer {
    */
   private addressToChannelId(address: string): string {
     return address.replace(/[^a-zA-Z0-9_]/g, '_');
+  }
+
+  /**
+   * Sanitizes a message name to be valid for JSON references.
+   * Replaces special characters (like # and spaces) that could cause issues.
+   */
+  private sanitizeMessageName(name: string): string {
+    return name.replace(/[#\s]/g, '_');
   }
 
   /**
@@ -141,7 +154,10 @@ export class AsyncapiTransformer {
   /**
    * Builds an AsyncAPI 3.0 channel object.
    */
-  private buildChannel(address: string, data: ChannelData): AsyncChannelObject3 {
+  private buildChannel(
+    address: string,
+    data: ChannelData,
+  ): AsyncChannelObject3 {
     const channel: AsyncChannelObject3 = {
       address,
     };
@@ -158,14 +174,17 @@ export class AsyncapiTransformer {
       channel.bindings = data.bindings;
     }
 
-    // Add messages to the channel
+    // Add messages directly to the channel (AsyncAPI 3.0 doesn't allow $ref here)
     if (Object.keys(data.messages).length > 0) {
       channel.messages = {};
-      for (const msgName of Object.keys(data.messages)) {
-        // Store message reference in channel
-        channel.messages[msgName] = {
-          $ref: `#/components/messages/${msgName}`,
-        };
+      for (const [msgName, msg] of Object.entries(data.messages)) {
+        const sanitizedName = this.sanitizeMessageName(msgName);
+        const sanitizedMsg = { ...(msg as AsyncMessageObject) };
+        // Update the name to match the sanitized version
+        if (sanitizedMsg.name) {
+          sanitizedMsg.name = sanitizedName;
+        }
+        channel.messages[sanitizedName] = sanitizedMsg;
       }
     }
 
@@ -207,7 +226,11 @@ export class AsyncapiTransformer {
     }
 
     // Build message references for this operation
-    const messageRefs = this.buildMessageReferences(op, channelId, channelMessages);
+    const messageRefs = this.buildMessageReferences(
+      op,
+      channelId,
+      channelMessages,
+    );
     if (messageRefs.length > 0) {
       operation.messages = messageRefs;
     }
@@ -236,14 +259,20 @@ export class AsyncapiTransformer {
       for (const msg of message.oneOf) {
         const msgName = this.getMessageName(msg as AsyncMessageObject);
         if (msgName && channelMessages[msgName]) {
-          refs.push({ $ref: `#/channels/${channelId}/messages/${msgName}` });
+          const sanitizedName = this.sanitizeMessageName(msgName);
+          refs.push({
+            $ref: `#/channels/${channelId}/messages/${sanitizedName}`,
+          });
         }
       }
     } else {
       // Single message
       const msgName = this.getMessageName(message);
       if (msgName && channelMessages[msgName]) {
-        refs.push({ $ref: `#/channels/${channelId}/messages/${msgName}` });
+        const sanitizedName = this.sanitizeMessageName(msgName);
+        refs.push({
+          $ref: `#/channels/${channelId}/messages/${sanitizedName}`,
+        });
       }
     }
 
@@ -288,11 +317,13 @@ export class AsyncapiTransformer {
 
   /**
    * Transforms a message object for AsyncAPI 3.0.
+   * Note: messageId is NOT added as it's not valid in channels.messages context.
    */
   private transformMessage(msg: AsyncMessageObject): AsyncMessageObject {
-    return {
-      ...msg,
-      // name is already set
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { messageId, ...rest } = msg as AsyncMessageObject & {
+      messageId?: string;
     };
+    return rest;
   }
 }

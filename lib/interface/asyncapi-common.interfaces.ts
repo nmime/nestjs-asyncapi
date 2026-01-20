@@ -161,6 +161,7 @@ export interface AsyncOperationTraitObject {
 }
 
 export interface AsyncMessageTraitObject {
+  messageId?: string;
   headers?: SchemaObject;
   correlationId?: AsyncCorrelationObject;
   schemaFormat?: string;
