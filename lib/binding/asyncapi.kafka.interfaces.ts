@@ -2,7 +2,7 @@
  * Kafka binding
  * @see https://github.com/asyncapi/bindings/tree/master/kafka
  */
-import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { SchemaObject } from '../interface/openapi-spec.interface';
 
 export interface KafkaServerBinding {
   schemaRegistryUrl: string;

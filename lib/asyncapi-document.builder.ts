@@ -1,8 +1,10 @@
 import {
+  ApiKeySecurityScheme,
   ExternalDocumentationObject,
+  HttpSecurityScheme,
+  OAuth2SecurityScheme,
   ReferenceObject,
-  SecuritySchemeObject,
-} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+} from './interface/openapi-spec.interface';
 import {
   AsyncApiDocument,
   AsyncSecuritySchemeObject,
@@ -220,12 +222,11 @@ export class AsyncApiDocumentBuilder {
   }
 
   public addBearerAuth(
-    options: SecuritySchemeObject = {
-      type: 'http',
-    },
+    options: Partial<HttpSecurityScheme> = {},
     name = 'bearer',
   ): this {
     this.addSecurity(name, {
+      type: 'http',
       scheme: 'bearer',
       bearerFormat: 'JWT',
       ...options,
@@ -234,9 +235,7 @@ export class AsyncApiDocumentBuilder {
   }
 
   public addOAuth2(
-    options: SecuritySchemeObject = {
-      type: 'oauth2',
-    },
+    options: Partial<OAuth2SecurityScheme> = {},
     name = 'oauth2',
   ): this {
     this.addSecurity(name, {
@@ -248,9 +247,7 @@ export class AsyncApiDocumentBuilder {
   }
 
   public addApiKey(
-    options: SecuritySchemeObject = {
-      type: 'apiKey',
-    },
+    options: Partial<Omit<ApiKeySecurityScheme, 'type'>> = {},
     name = 'api_key',
   ): this {
     this.addSecurity(name, {
@@ -263,9 +260,7 @@ export class AsyncApiDocumentBuilder {
   }
 
   public addBasicAuth(
-    options: SecuritySchemeObject = {
-      type: 'http',
-    },
+    options: Partial<HttpSecurityScheme> = {},
     name = 'basic',
   ): this {
     this.addSecurity(name, {
@@ -278,9 +273,7 @@ export class AsyncApiDocumentBuilder {
 
   public addCookieAuth(
     cookieName = 'connect.sid',
-    options: SecuritySchemeObject = {
-      type: 'apiKey',
-    },
+    options: Partial<Omit<ApiKeySecurityScheme, 'type'>> = {},
     securityName = 'cookie',
   ): this {
     this.addSecurity(securityName, {

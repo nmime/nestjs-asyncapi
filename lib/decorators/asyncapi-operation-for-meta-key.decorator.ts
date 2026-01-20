@@ -10,11 +10,11 @@ import { OneAsyncApiMessage } from '../interface/asyncapi-message.interface';
 function makeHeaders(headers?: AsyncApiOperationHeaders) {
   return headers
     ? {
-        type: 'object',
+        type: 'object' as const,
         properties: Object.entries(headers)
           .map(([key, value]) => ({
             [key]: {
-              type: 'string',
+              type: 'string' as const,
               ...value,
             },
           }))

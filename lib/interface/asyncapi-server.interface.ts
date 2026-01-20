@@ -1,7 +1,4 @@
-import {
-  ReferenceObject,
-  ServerObject,
-} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { ReferenceObject, ServerObject } from './openapi-spec.interface';
 import { AmqpServerBinding, KafkaServerBinding } from '../binding';
 import {
   AsyncServerVariableObject,

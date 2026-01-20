@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { MetadataScanner } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
-import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { SchemaObject } from '../interface/openapi-spec.interface';
 import { flatten } from 'lodash';
 import {
   asyncApiClassAnnotationLabels,
