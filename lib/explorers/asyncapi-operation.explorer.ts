@@ -2,7 +2,7 @@ import { Type } from '@nestjs/common';
 import { SchemaObject } from '../interface/openapi-spec.interface';
 import { DECORATORS } from '../asyncapi.constants';
 import { AsyncApiOperationOptionsRaw } from '../interface';
-import { OperationObjectFactory } from '../services';
+import { OperationObjectFactory } from '../services/operation-object.factory';
 
 const operationObjectFactory = new OperationObjectFactory();
 
