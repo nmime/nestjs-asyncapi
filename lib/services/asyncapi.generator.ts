@@ -16,7 +16,7 @@ export class AsyncapiGenerator {
       entrypoint: 'index.html.js',
       output: 'string',
       templateParams: {
-        singleFile: 'true',
+        singleFile: true,
         ...templateOptions,
       },
     });
