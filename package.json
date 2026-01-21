@@ -1,6 +1,6 @@
 {
   "name": "@nmime/nestjs-asyncapi",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "NestJS AsyncAPI module - generate documentation of your event-based services using decorators. Supports AsyncAPI 3.0, 2.x, and 1.x specifications.",
   "author": "nmime",
   "contributors": [
@@ -68,10 +68,6 @@
     "js-yaml": "4.1.1",
     "openapi-types": "^12.1.3",
     "reflect-metadata": "0.2.2"
-  },
-  "optionalDependencies": {
-    "@asyncapi/nodejs-template": "3.0.4",
-    "@asyncapi/nodejs-ws-template": "0.10.0"
   },
   "overrides": {
     "tar": "^7.5.3",
