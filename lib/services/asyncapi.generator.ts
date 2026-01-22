@@ -1,4 +1,3 @@
-import Generator from '@asyncapi/generator';
 import fs from 'fs/promises';
 import jsyaml from 'js-yaml';
 import os from 'os';
@@ -17,6 +16,11 @@ export class AsyncapiGenerator {
   }
 
   public async generate(contract: AsyncApiDocument): Promise<string> {
+    // Lazy-load @asyncapi/generator to avoid loading it at module initialization time.
+    // This allows tests and code that only use decorators to work without
+    // requiring the full generator dependency tree (which has nested semver issues in Jest).
+    const { default: Generator } = await import('@asyncapi/generator');
+
     const yaml = jsyaml.dump(contract);
     const tmpDir = path.join(
       os.tmpdir(),
