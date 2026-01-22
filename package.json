@@ -25,6 +25,9 @@
   "bugs": {
     "url": "https://github.com/nmime/nestjs-asyncapi/issues"
   },
+  "engines": {
+    "node": ">=24.11"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
