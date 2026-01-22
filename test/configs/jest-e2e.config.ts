@@ -1,5 +1,5 @@
 import type { JestConfigWithTsJest } from 'ts-jest';
-import { baseConfig } from './jest-base.config.ts';
+import { baseConfig } from './jest-base.config';
 
 export const e2eConfig: JestConfigWithTsJest = {
   ...baseConfig,
