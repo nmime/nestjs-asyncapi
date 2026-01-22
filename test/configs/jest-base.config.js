@@ -1,6 +1,5 @@
-import type { JestConfigWithTsJest } from 'ts-jest';
-
-export const baseConfig: JestConfigWithTsJest = {
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+const baseConfig = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: '../../',
   transform: {
@@ -17,4 +16,4 @@ export const baseConfig: JestConfigWithTsJest = {
   },
 };
 
-export default baseConfig;
+module.exports = { baseConfig };

@@ -135,7 +135,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --watch --debug",
     "---tests---": "",
-    "test:e2e": "jest --runInBand --config test/configs/jest-e2e.config.ts",
+    "test:e2e": "jest --runInBand --config test/configs/jest-e2e.config.js",
     "---npm---": "",
     "publish:next": "npm publish --access public --tag next",
     "publish:beta": "npm publish --access public --tag beta",

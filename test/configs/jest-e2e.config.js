@@ -1,7 +1,7 @@
-import type { JestConfigWithTsJest } from 'ts-jest';
-import { baseConfig } from './jest-base.config';
+const { baseConfig } = require('./jest-base.config.js');
 
-export const e2eConfig: JestConfigWithTsJest = {
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+const e2eConfig = {
   ...baseConfig,
   testRegex: '.\\.e2e-spec\\.ts$',
   transform: {
@@ -16,4 +16,4 @@ export const e2eConfig: JestConfigWithTsJest = {
   },
 };
 
-export default e2eConfig;
+module.exports = e2eConfig;
